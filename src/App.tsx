@@ -1,25 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useEffect, useRef, useState } from 'react';
+import './App.scss'
 function App() {
+
+
+  const weekDays = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ]
+  let [date, setDate] = useState({
+    time: new Date().toLocaleTimeString(),
+    year: new Date().toLocaleDateString(),
+    weekDay: weekDays[new Date().getDay() - 1]
+  })
+  useEffect(() => {
+    const subs = setInterval(() => {
+      console.log("change")
+      setDate({
+        time: new Date().toLocaleTimeString(),
+        year: new Date().toLocaleDateString(),
+        weekDay: weekDays[new Date().getDay() - 1]
+      })
+    }, 1000)
+    return () => {
+      clearInterval(subs)
+    }
+  }, [])
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="container">
+      <div className="clock">
+        <div className="time"> {`${ date.time }`}</div>
+        <div className="date">{`${ date.year }, ${ date.weekDay }`}</div>
+      </div>
+
+    </main>
   );
 }
 
